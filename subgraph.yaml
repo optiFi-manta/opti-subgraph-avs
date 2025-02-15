@@ -1,0 +1,76 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: OptiFiServiceManager
+    network: manta-pacific-sepolia
+    source:
+      address: "0xab14a952927a16146e301970b3e3f8b83943f4a9"
+      abi: OptiFiServiceManager
+      startBlock: 3146883
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Debug
+        - OptiTaskResponded
+        - Initialized
+        - NewOptiTaskCreated
+        - OwnershipTransferred
+        - RewardsInitiatorUpdated
+      abis:
+        - name: OptiFiServiceManager
+          file: ./abis/OptiFiServiceManager.json
+      eventHandlers:
+        - event: Debug(bytes32,bytes32)
+          handler: handleDebug
+        - event: OptiTaskResponded(indexed uint32,(address,string,uint32),address,bytes)
+          handler: handleOptiTaskResponded
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: NewOptiTaskCreated(indexed uint32,(address,string,uint32))
+          handler: handleNewOptiTaskCreated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RewardsInitiatorUpdated(address,address)
+          handler: handleRewardsInitiatorUpdated
+      file: ./src/optifi-service-manager.ts
+  - kind: ethereum
+    name: TransparentUpgradeableProxy
+    network: manta-pacific-sepolia
+    source:
+      address: "0x4e49d8d8b1589de0ef2b8151e5e3912182bd11ce"
+      abi: OptiFiServiceManager
+      startBlock: 3146883
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Debug
+        - OptiTaskResponded
+        - Initialized
+        - NewOptiTaskCreated
+        - OwnershipTransferred
+        - RewardsInitiatorUpdated
+      abis:
+        - name: OptiFiServiceManager
+          file: ./abis/OptiFiServiceManager.json
+      eventHandlers:
+        - event: Debug(bytes32,bytes32)
+          handler: handleDebug
+        - event: OptiTaskResponded(indexed uint32,(address,string,uint32),address,bytes)
+          handler: handleOptiTaskResponded
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: NewOptiTaskCreated(indexed uint32,(address,string,uint32))
+          handler: handleNewOptiTaskCreated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RewardsInitiatorUpdated(address,address)
+          handler: handleRewardsInitiatorUpdated
+      file: ./src/transparent-upgradeable-proxy.ts
